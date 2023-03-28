@@ -430,13 +430,11 @@ fn generate_display(game_state: &mut GameState, size: Rect) -> Result<(), String
             return Err(format!("Failed to stop {:?}", word));
         }
 
-        let color = if progress > &0.8 {
-            Color::Red
-        } else if progress > &0.3 {
-            Color::Rgb(181, 136, 48)
-        } else {
-            Color::Green
-        };
+        let color = Color::Rgb(
+            (progress * 255.0) as u8,
+            (255.0 - (progress * 255.0)) as u8,
+            0,
+        );
         game_state.display_rows.push(Spans::from(vec![
             Span::raw(
                 " ".repeat((progress * (size.width as f32 - text.len() as f32 - 3.0)) as usize),
