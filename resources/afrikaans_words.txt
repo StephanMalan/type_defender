@@ -44,8 +44,6 @@ tyd
 indien
 sal
 hoe
-gesê
-‘n
 elke
 vertel
 doen
@@ -92,7 +90,6 @@ weer
 dier
 punt
 ma
-wêreld
 naby
 bou
 self
@@ -131,7 +128,6 @@ vorm
 vonnis
 groot
 dink
-sê
 help
 lae
 lyn
@@ -311,7 +307,6 @@ lys
 alhoewel
 voel
 Besprekings
-voël
 gou
 liggaam
 hond
@@ -337,7 +332,7 @@ helfte
 rock
 orde
 vuur
-Suid-
+Suid
 probleem
 stukkie
 vertel
@@ -374,7 +369,6 @@ goud
 moontlik
 vliegtuig
 plek
-droë
 wonder
 lag
 duisend
@@ -432,7 +426,6 @@ week
 finale
 gegee
 groen
-o
 vinnige
 ontwikkel
 oseaan
@@ -458,7 +451,6 @@ honderd
 vyf
 onthou
 stap
-vroeë
 hou
 West
 grond
@@ -479,7 +471,6 @@ verskeie
 vokaal
 teenoor
 oorlog
-lê
 teen
 patroon
 stadig
@@ -491,8 +482,6 @@ dien
 verskyn
 pad
 kaart
-reën
-reël
 regeer
 trek
 koue
@@ -654,13 +643,13 @@ baie
 gebreek
 geval
 middel
-dood te maak
+dood
 seun
 meer
 oomblik
 skaal
 hard
-die lente
+lente
 neem
 kind
 reguit
@@ -733,7 +722,6 @@ kus
 afskrif
 frase
 stil
-hoë
 sand
 grond
 roll
@@ -749,7 +737,7 @@ natuurlike
 view
 sin
 kapitaal
-sal nie
+sal
 stoel
 gevaar
 vrugte
@@ -773,7 +761,7 @@ student
 hoek
 partytjie
 toevoer
-wie se
+wie
 spoor
 ring
 karakter
@@ -821,7 +809,6 @@ bekende
 dollar
 stroom
 vrees
-oë
 dun
 driehoek
 planeet
@@ -878,7 +865,6 @@ direkte
 mark
 graad
 vul
-chick
 liewe
 vyand
 antwoord
@@ -894,7 +880,6 @@ pad
 vloeistof
 teken
 bedoel
-kwosiënt
 tande
 dop
 nek
@@ -906,7 +891,7 @@ vaardigheid
 vroue
 seisoen
 oplossing
-Magnet
+magneet
 silwer
 dankie
 tak
@@ -965,7 +950,6 @@ vrou
 skoen
 skouer
 verspreiding
-reël
 kamp
 bedink
 katoen
@@ -990,8 +974,8 @@ verkeerd
 grys
 herhaling
 vereis
-breë
-voor te berei
+breed
+berei
 sout
 neus
 meervoud
