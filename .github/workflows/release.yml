@@ -43,3 +43,15 @@ jobs:
         env:
           # (required)
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  update-version-badge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: schneegans/dynamic-badges-action@v1.6.0
+        with:
+          auth: ${{ secrets.GIST_SECRET }}
+          gistID: 415afdd86874b8620caa8e841546f4b3
+          filename: version.json
+          label: Version
+          message: ${{ github.ref_name }}
+          color: brightgreen
