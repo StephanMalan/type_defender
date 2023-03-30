@@ -1,15 +1,15 @@
 [package]
 name = "type_defender"
-version = "0.1.0"
+version = "0.0.2"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-crossterm = "0.25"
+crossterm = "0.26.1"
 rand = "0.8.5"
 rust-embed = "6.6.1"
 strum = { version = "0.24.1", features = ["derive", "strum_macros"] }
 strum_macros = "0.24.3"
 tui = "0.19.0"
-tui-textarea = "0.2.0"
+tui-input = "0.7.0"

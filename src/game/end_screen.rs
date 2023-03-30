@@ -8,8 +8,9 @@ use std::{
 use crossterm::event::{self, Event, KeyCode};
 use tui::{
     backend::CrosstermBackend,
-    layout::{Constraint, Direction, Layout, Rect},
-    widgets::{List, ListItem},
+    layout::{Alignment, Constraint, Direction, Layout, Rect},
+    text::Spans,
+    widgets::{Block, BorderType, Borders, List, ListItem, Paragraph},
     Terminal,
 };
 
@@ -30,8 +31,8 @@ pub(crate) fn show_view(
     let list = List::new(&*items.items)
         .block(
             tui::widgets::Block::default()
-                .title(format!("Score: {:.1}", game_state.score))
-                .borders(tui::widgets::Borders::ALL),
+                .title("Options:")
+                .borders(tui::widgets::Borders::NONE),
         )
         .highlight_symbol(">> ");
 
@@ -49,8 +50,8 @@ pub(crate) fn show_view(
             )));
         }
 
-        // Create a layout with one row and one column
-        let layout = Layout::default()
+        // Create a layouts and widgets
+        let main_pane = Layout::default()
             .direction(Direction::Vertical)
             .margin(1)
             .constraints([Constraint::Min(0)].as_ref())
@@ -60,9 +61,36 @@ pub(crate) fn show_view(
                 width: size.width,
                 height: 47,
             });
+        let block = Block::default()
+            .borders(Borders::ALL)
+            .title(" Type Defender ")
+            .title_alignment(Alignment::Center)
+            .border_type(BorderType::Rounded);
+        let inner_pane = Layout::default()
+            .direction(Direction::Vertical)
+            .margin(3)
+            .constraints([Constraint::Length(4), Constraint::Percentage(100)].as_ref())
+            .split(main_pane[0]);
+        let end_message_text = vec![
+            Spans::from("Game Over!"),
+            Spans::from(""),
+            Spans::from(format!("Score: {:.1}", game_state.score)),
+        ];
+        let end_message_paragraph = Paragraph::new(end_message_text);
 
-        // Wait for a key press event
-        if event::poll(Duration::from_millis(33))? {
+        // Render terminal
+        terminal.draw(|f| {
+            f.render_widget(block, main_pane[0]);
+            f.render_widget(end_message_paragraph, inner_pane[0]);
+            f.render_widget(list.clone(), inner_pane[1]);
+            f.render_stateful_widget(list.clone(), inner_pane[1], &mut items.state)
+        })?;
+
+        // Listen for a key press events
+        let poll_time = FRAME_TIME
+            .checked_sub(Duration::from_millis(5))
+            .unwrap_or_else(|| Duration::from_micros(0));
+        if event::poll(poll_time)? {
             if let Event::Key(key) = event::read()? {
                 match key.code {
                     KeyCode::Esc => return Ok(false),
@@ -78,17 +106,6 @@ pub(crate) fn show_view(
                 }
             }
         }
-
-        // Draw the list in the center of the layout
-        terminal.draw(|f| {
-            let inner_layout = Layout::default()
-                .direction(Direction::Vertical)
-                .margin(1)
-                .constraints([Constraint::Min(0)].as_ref())
-                .split(layout[0]);
-            f.render_widget(list.clone(), inner_layout[0]);
-            f.render_stateful_widget(list.clone(), inner_layout[0], &mut items.state)
-        })?;
 
         // Sleep to maintain desired FPS
         let time_to_sleep = FRAME_TIME
