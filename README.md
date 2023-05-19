@@ -1,10 +1,18 @@
-# ⌨️Type Defender⌨️
+<h1 align="center">
+  
+  # ⌨️ Type Defender ⌨️
+  [![CI][ci0]][ci1] [![DL][dl0]][dl1] [![crates][cr0]][cr1] ![MIT][li0] ![RV][rv0] 
+ 
+</h1>
 
-<div align="left">
-  <a href="https://github.com/StephanMalan/type_defender/releases/latest">
-    <img src="https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/stephanmalan/415afdd86874b8620caa8e841546f4b3/raw/version.json" alt="Latest version">
-  </a>
-</div>
+[ci0]: https://img.shields.io/github/actions/workflow/status/stephanmalan/type_defender/release.yml
+[ci1]: https://github.com/StephanMalan/type_defender/actions
+[dl0]: https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/stephanmalan/415afdd86874b8620caa8e841546f4b3/raw/version.json
+[dl1]: https://github.com/StephanMalan/type_defender/releases/latest
+[cr0]: https://img.shields.io/badge/dynamic/json?color=success&label=crates.io&prefix=v&query=versions%5B0%5D.num&url=https%3A%2F%2Fcrates.io%2Fapi%2Fv1%2Fcrates%type_defender%2Fversions
+[cr1]: https://crates.io/crates/type_defender
+[li0]: https://img.shields.io/badge/license-MIT-blue.svg
+[rv0]: https://img.shields.io/badge/rustc-1.71%2B-lightgrey.svg
 
 ![type_defender](https://user-images.githubusercontent.com/12143963/228680082-cd2495b5-306b-467e-8ad4-20d77af12fac.gif)
 
