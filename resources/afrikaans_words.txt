@@ -1,5 +1,5 @@
 as
-Ek
+ek
 sy
 wat
 hy
@@ -30,7 +30,6 @@ die
 van
 te
 en
-‘n
 in
 ons
 kan
@@ -69,11 +68,10 @@ land
 hier
 moet
 groot
-hoë
 sodanige
 volg
-Wet
-Hoekom
+wet
+hoekom
 vra
 mans
 verandering
@@ -225,7 +223,7 @@ boom
 steek
 plaas
 hard
-Begin
+begin
 mag
 storie
 saag
@@ -306,7 +304,7 @@ rooi
 lys
 alhoewel
 voel
-Besprekings
+besprekings
 gou
 liggaam
 hond

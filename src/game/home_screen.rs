@@ -67,10 +67,6 @@ pub(crate) fn show_view(
             });
 
         // Wait for a key press event
-        // let tick_rate = Duration::from_millis(250);
-        // let timeout = tick_rate
-        //     .checked_sub(last_tick.elapsed())
-        //     .unwrap_or_else(|| Duration::from_secs(0));
         if event::poll(Duration::from_millis(33))? {
             if let Event::Key(key) = event::read()? {
                 match key.code {

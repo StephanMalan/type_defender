@@ -1,7 +1,13 @@
 [package]
 name = "type_defender"
-version = "0.1.0"
+version = "0.2.0"   
+categories = ["games"]
+description = "A terminal based game to improve your typing."
+repository = "https://github.com/StephanMalan/type_defender"
+license = "MIT"
+authors = ["Stephan Malan <stephanmalan.rob@gmail.com>"]
 edition = "2021"
+include = ["**/*.rs", "resources/*", "Cargo.toml", "LICSENSE", "README.md"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
