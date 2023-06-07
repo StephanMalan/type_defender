@@ -17,7 +17,7 @@ use tui::text::Spans;
 use tui::widgets::ListState;
 use tui::Terminal;
 
-const FPS: i32 = 30;
+const FPS: i32 = 60;
 const FRAME_TIME: Duration = Duration::from_micros(1_000_000 / FPS as u64);
 
 #[derive(RustEmbed)]
@@ -34,6 +34,7 @@ enum Language {
 struct GameState<'a> {
     language: Language,
     score: f32,
+    wpm: f32,
     word_pool: Vec<String>,
     words: Vec<Word>,
     word_slots: [i32; 40],
@@ -45,6 +46,7 @@ impl GameState<'_> {
         GameState {
             language: Language::English,
             score: 0.0,
+            wpm: 20.0,
             word_pool: vec![],
             words: vec![],
             word_slots: [0; 40],

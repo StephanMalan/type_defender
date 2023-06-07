@@ -5,8 +5,8 @@ use std::{
     time::{Duration, Instant},
 };
 
-use crossterm::event;
-use rand::Rng;
+use crossterm::event::{self, KeyCode};
+use rand::{thread_rng, Rng};
 use tui::{
     backend::CrosstermBackend,
     layout::{Constraint, Direction, Layout, Rect},
@@ -15,7 +15,7 @@ use tui::{
     widgets::{Block, Borders, Paragraph, Wrap},
     Terminal,
 };
-use tui_textarea::{Input, Key, TextArea};
+use tui_input::{backend::crossterm::EventHandler, Input};
 
 use crate::{Asset, GameError, GameState, Word, FPS, FRAME_TIME};
 
@@ -28,12 +28,7 @@ pub(crate) fn show_view(
 
     load_words(game_state)?;
 
-    let mut text_input = TextArea::default();
-    text_input.set_block(
-        Block::default()
-            .borders(Borders::ALL)
-            .title("Attack console"),
-    );
+    let mut text_input = Input::default();
 
     loop {
         let elapsed_time = last_frame_time.elapsed();
@@ -61,16 +56,20 @@ pub(crate) fn show_view(
         let bottom_pane = Layout::default()
             .direction(Direction::Horizontal)
             .margin(0)
-            .constraints([Constraint::Percentage(50), Constraint::Percentage(50)].as_ref())
+            .constraints(
+                [
+                    Constraint::Percentage(50),
+                    Constraint::Percentage(25),
+                    Constraint::Percentage(25),
+                ]
+                .as_ref(),
+            )
             .split(main_pane[1]);
 
         if counter == 0 {
             spawn_new_word(game_state);
-            let highest_wpm = 80.0;
-            let lowest_wpm = 30.0;
-            let wpm =
-                highest_wpm - ((highest_wpm - lowest_wpm) * (500.0 / (500.0 + game_state.score)));
-            counter = ((60.0 / wpm) * FPS as f32) as usize
+            game_state.wpm = 30.0 + game_state.score / 10.0;
+            counter = ((60.0 / game_state.wpm) * FPS as f32) as usize
         }
 
         // Draw the words
@@ -78,23 +77,27 @@ pub(crate) fn show_view(
             return Ok(true);
         }
 
-        if !text_input.lines()[0].is_empty() {
-            if check_if_typed(game_state, text_input.lines()[0].to_owned()) {
-                text_input.delete_line_by_head();
-            }
+        if !text_input.value().is_empty()
+            && check_if_typed(game_state, text_input.value().to_owned())
+        {
+            text_input.reset();
         }
 
         let poll_time = FRAME_TIME
             .checked_sub(Duration::from_millis(5))
             .unwrap_or_else(|| Duration::from_micros(0));
         if event::poll(poll_time)? {
-            match crossterm::event::read()?.into() {
-                Input { key: Key::Esc, .. } => return Ok(false),
-                Input {
-                    key: Key::Enter, ..
-                } => continue,
-                input => text_input.input(input),
-            };
+            if let crossterm::event::Event::Key(key) = event::read()? {
+                match key.code {
+                    KeyCode::Enter => {
+                        text_input.reset();
+                        continue;
+                    }
+                    KeyCode::Char(' ') => continue,
+                    KeyCode::Esc => return Ok(false),
+                    _ => text_input.handle_event(&crossterm::event::Event::Key(key)),
+                };
+            }
         }
 
         // Draw the text
@@ -109,15 +112,26 @@ pub(crate) fn show_view(
                 .style(Style::default().fg(Color::White))
                 .alignment(tui::layout::Alignment::Left)
                 .wrap(Wrap { trim: false });
-
-            let score_label =
-                Paragraph::new(format!("{:.1} counter: {}", game_state.score, counter))
-                    .block(Block::default().borders(Borders::ALL).title("Score"));
-
             f.render_widget(paragraph, main_pane[0]);
-            // f.render_widget(bottom_pane, main_pane[1]);
-            f.render_widget(text_input.widget(), bottom_pane[0]);
-            f.render_widget(score_label, bottom_pane[1])
+
+            let scroll = text_input.visual_scroll((bottom_pane[0].width.max(3) - 3) as usize);
+            let text_input_paragraph = Paragraph::new(text_input.value())
+                .style(Style::default())
+                .scroll((0, scroll as u16))
+                .block(Block::default().borders(Borders::ALL).title("Input"));
+            f.render_widget(text_input_paragraph, bottom_pane[0]);
+            f.set_cursor(
+                bottom_pane[0].x + ((text_input.visual_cursor()).max(scroll) - scroll) as u16 + 1,
+                bottom_pane[0].y + 1,
+            );
+
+            let score_label = Paragraph::new(format!("{:.1}", game_state.score))
+                .block(Block::default().borders(Borders::ALL).title("Score"));
+            f.render_widget(score_label, bottom_pane[1]);
+
+            let wpm_label = Paragraph::new(format!("{:.1}", game_state.wpm))
+                .block(Block::default().borders(Borders::ALL).title("WPM"));
+            f.render_widget(wpm_label, bottom_pane[2])
         })?;
 
         // Sleep to maintain desired FPS
@@ -171,8 +185,9 @@ fn spawn_new_word(game_state: &mut GameState) {
     let index = rand::thread_rng().gen_range(0..game_state.word_pool.len());
     let new_word = game_state.word_pool.remove(index);
 
-    let mut speed = 0.2 - ((0.15) * (200.0 / (200.0 + game_state.score)));
-    speed += rand::thread_rng().gen_range(-0.02..0.02);
+    let speed =
+        ((game_state.wpm / FPS as f32 / 20.0) + thread_rng().gen_range(-0.02..0.02)).max(0.01);
+
     game_state
         .words
         .push(Word::new(new_word.to_lowercase(), random_index, speed));
@@ -223,7 +238,7 @@ fn check_if_typed(game_state: &mut GameState, text: String) -> bool {
         .for_each(|w| {
             found = true;
             w.found = true;
-            game_state.score += 100.0 * (1.0 - w.clone().progress()) * w.speed;
+            game_state.score += 500.0 * (1.0 - w.clone().progress()).powf(3.0) * w.speed;
             game_state.word_slots[w.y] = 0;
         });
     found

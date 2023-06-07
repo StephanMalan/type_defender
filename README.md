@@ -9,7 +9,7 @@
 [ci1]: https://github.com/StephanMalan/type_defender/actions
 [dl0]: https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/stephanmalan/415afdd86874b8620caa8e841546f4b3/raw/version.json
 [dl1]: https://github.com/StephanMalan/type_defender/releases/latest
-[cr0]: https://img.shields.io/badge/dynamic/json?color=success&label=crates.io&prefix=v&query=versions%5B0%5D.num&url=https%3A%2F%2Fcrates.io%2Fapi%2Fv1%2Fcrates%type_defender%2Fversions
+[cr0]: https://img.shields.io/badge/dynamic/json?color=success&label=crates.io&prefix=v&query=versions%5B0%5D.num&url=https%3A%2F%2Fcrates.io%2Fapi%2Fv1%2Fcrates%2Ftype_defender%2Fversions
 [cr1]: https://crates.io/crates/type_defender
 [li0]: https://img.shields.io/badge/license-MIT-blue.svg
 [rv0]: https://img.shields.io/badge/rustc-1.71%2B-lightgrey.svg
